@@ -19,7 +19,7 @@
             <div class="w-12 h-12 rounded-full bg-indigo-600 flex items-center justify-center font-bold text-lg border-2 border-indigo-400" id="user-initial">EH</div>
             <div>
                 <h2 class="font-bold text-sm" id="username">EasyTaka User</h2>
-                <p class="text-xs text-yellow-400" id="user-balance">ব্যালেন্স: ৳1070.00 💰</p>
+                <p class="text-xs text-yellow-400" id="user-balance">ব্যালেন্স: ৳00.00 💰</p>
             </div>
         </div>
         <div class="bg-red-500/20 p-2 rounded-full border border-red-500/50 text-red-400">
@@ -35,7 +35,7 @@
             <!-- Total Balance Card -->
             <div class="bg-gradient-to-r from-blue-600 to-purple-600 p-6 rounded-2xl shadow-xl text-center">
                 <p class="text-xs uppercase tracking-wider text-blue-200">মোট ব্যালেন্স</p>
-                <h1 class="text-4xl font-extrabold mt-1" id="main-balance">৳1070.00</h1>
+                <h1 class="text-4xl font-extrabold mt-1" id="main-balance">৳00.00</h1>
             </div>
 
             <!-- Stats Grid -->
@@ -52,7 +52,7 @@
 
             <!-- Referral Card -->
             <div class="bg-gray-800/60 p-4 rounded-xl border border-gray-700">
-                <p class="text-sm">প্রতিদিন বন্ধুদের রেফার করুন এবং একটি রেফারে <span class="text-yellow-400 font-bold">১৩০ টাকা</span> বোনাস পান 🎁</p>
+                <p class="text-sm">প্রতিদিন বন্ধুদের রেফার করুন এবং একটি রেফারে <span class="text-yellow-400 font-bold">10 টাকা</span> বোনাস পান 🎁</p>
                 <div class="bg-gray-900 p-2.5 rounded-lg mt-3 text-xs text-gray-400 truncate border border-gray-700" id="ref-link">
                     https://t.me/EasyTakaHub_bot?start=ref12345
                 </div>
@@ -67,7 +67,7 @@
         <div id="tab-task" class="space-y-4 hidden">
             <div class="bg-gray-800/60 p-5 rounded-2xl border border-gray-700 text-center">
                 <h3 class="font-bold text-lg">Rewarded Ad</h3>
-                <p class="text-xs text-gray-400 mt-1">প্রতিটি বিজ্ঞাপনের জন্য ৩০ টাকা আয় করুন</p>
+                <p class="text-xs text-gray-400 mt-1">প্রতিটি বিজ্ঞাপনের জন্য 1 টাকা আয় করুন</p>
                 <button onclick="watchAd()" class="mt-4 w-full bg-blue-600 hover:bg-blue-500 py-3 rounded-xl font-bold shadow-lg transition">Watch Ad</button>
                 <p class="text-xs text-gray-400 mt-3">PROGRESS: <span id="ad-progress">0</span> / 17 TODAY</p>
             </div>
@@ -77,7 +77,7 @@
                 <div class="bg-gray-800/60 p-3 rounded-xl border border-gray-700 flex items-center justify-between">
                     <div>
                         <p class="text-sm font-semibold">চ্যানেলে জয়েন করুন 🎁</p>
-                        <p class="text-xs text-yellow-400">+৳150 বোনাস</p>
+                        <p class="text-xs text-yellow-400">+৳1 বোনাস</p>
                     </div>
                     <button onclick="completeTask(this, 150)" class="bg-green-600 px-4 py-1.5 rounded-lg text-xs font-bold">DONE</button>
                 </div>
@@ -91,9 +91,9 @@
                 <div>
                     <label class="text-xs text-gray-400">পেমেন্ট মেথড</label>
                     <select id="withdraw-method" class="w-full mt-1 bg-gray-900 border border-gray-700 p-3 rounded-xl text-sm outline-none">
-                        <option>Bkash (ন্যূনতম ২০০০)</option>
-                        <option>Nagad (ন্যূনতম ২০০০)</option>
-                        <option>Rocket (ন্যূনতম ২০০০)</option>
+                        <option>Bkash (ন্যূনতম ৪০০)</option>
+                        <option>Nagad (ন্যূনতম ৪০০)</option>
+                        <option>Rocket (ন্যূনতম ৪০০)</option>
                     </select>
                 </div>
                 <div>
@@ -127,7 +127,7 @@
     </nav>
 
     <script>
-        let balance = 1070.00;
+        let balance = 00.00;
         let adsWatched = 0;
 
         function switchTab(tab) {
@@ -148,10 +148,10 @@
         function watchAd() {
             if (adsWatched < 17) {
                 adsWatched++;
-                balance += 30;
+                balance += 1;
                 document.getElementById('ad-progress').innerText = adsWatched;
                 updateUI();
-                alert('সফলভাবে অ্যাড দেখা সম্পন্ন হয়েছে! ৩০ টাকা যোগ হয়েছে।');
+                alert('সফলভাবে অ্যাড দেখা সম্পন্ন হয়েছে! ১ টাকা যোগ হয়েছে।');
             } else {
                 alert('আজকের লিমিট শেষ!');
             }
@@ -182,8 +182,8 @@
         function requestWithdraw() {
             let amount = parseFloat(document.getElementById('withdraw-amount').value);
             let acc = document.getElementById('acc-number').value;
-            if(!acc || isNaN(amount) || amount < 2000) {
-                alert('ন্যূনতম ২০০০ টাকা এবং সঠিক অ্যাকাউন্ট নম্বর দিন!');
+            if(!acc || isNaN(amount) || amount < 400) {
+                alert('ন্যূনতম ৪০০ টাকা এবং সঠিক অ্যাকাউন্ট নম্বর দিন!');
                 return;
             }
             if(amount > balance) {
