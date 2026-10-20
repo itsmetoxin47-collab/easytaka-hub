@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EasyTaka Hub - Daily Money</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { background: linear-gradient(135deg, #0f0c29, #302b63, #24243e); color: white; font-family: sans-serif; }
+    </style>
+</head>
+<body class="min-h-screen pb-20">
+
+    <!-- Top Header -->
+    <div class="flex items-center justify-between p-4 bg-gray-900/50 backdrop-blur border-b border-gray-800">
+        <div class="flex items-center space-x-3">
+            <div class="w-12 h-12 rounded-full bg-indigo-600 flex items-center justify-center font-bold text-lg border-2 border-indigo-400" id="user-initial">EH</div>
+            <div>
+                <h2 class="font-bold text-sm" id="username">EasyTaka User</h2>
+                <p class="text-xs text-yellow-400" id="user-balance">ব্যালেন্স: ৳1070.00 💰</p>
+            </div>
+        </div>
+        <div class="bg-red-500/20 p-2 rounded-full border border-red-500/50 text-red-400">
+            🔔 1
+        </div>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <main class="p-4 max-w-md mx-auto">
+
+        <!-- HOME TAB -->
+        <div id="tab-home" class="space-y-4">
+            <!-- Total Balance Card -->
+            <div class="bg-gradient-to-r from-blue-600 to-purple-600 p-6 rounded-2xl shadow-xl text-center">
+                <p class="text-xs uppercase tracking-wider text-blue-200">মোট ব্যালেন্স</p>
+                <h1 class="text-4xl font-extrabold mt-1" id="main-balance">৳1070.00</h1>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-gray-800/60 p-4 rounded-xl border border-gray-700 text-center">
+                    <p class="text-xs text-gray-400">এড দেখা হয়েছে</p>
+                    <p class="text-2xl font-bold mt-1" id="ads-count">0</p>
+                </div>
+                <div class="bg-gray-800/60 p-4 rounded-xl border border-gray-700 text-center">
+                    <p class="text-xs text-gray-400">মোট রেফার</p>
+                    <p class="text-2xl font-bold mt-1" id="refer-count">0</p>
+                </div>
+            </div>
+
+            <!-- Referral Card -->
+            <div class="bg-gray-800/60 p-4 rounded-xl border border-gray-700">
+                <p class="text-sm">প্রতিদিন বন্ধুদের রেফার করুন এবং একটি রেফারে <span class="text-yellow-400 font-bold">১৩০ টাকা</span> বোনাস পান 🎁</p>
+                <div class="bg-gray-900 p-2.5 rounded-lg mt-3 text-xs text-gray-400 truncate border border-gray-700" id="ref-link">
+                    https://t.me/EasyTakaHub_bot?start=ref12345
+                </div>
+                <div class="flex gap-2 mt-3">
+                    <button onclick="copyRefLink()" class="flex-1 bg-gray-700 hover:bg-gray-600 py-2 rounded-lg text-sm font-semibold transition">Copy</button>
+                    <button onclick="shareRefLink()" class="flex-1 bg-indigo-600 hover:bg-indigo-500 py-2 rounded-lg text-sm font-semibold transition">Share</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- TASK TAB -->
+        <div id="tab-task" class="space-y-4 hidden">
+            <div class="bg-gray-800/60 p-5 rounded-2xl border border-gray-700 text-center">
+                <h3 class="font-bold text-lg">Rewarded Ad</h3>
+                <p class="text-xs text-gray-400 mt-1">প্রতিটি বিজ্ঞাপনের জন্য ৩০ টাকা আয় করুন</p>
+                <button onclick="watchAd()" class="mt-4 w-full bg-blue-600 hover:bg-blue-500 py-3 rounded-xl font-bold shadow-lg transition">Watch Ad</button>
+                <p class="text-xs text-gray-400 mt-3">PROGRESS: <span id="ad-progress">0</span> / 17 TODAY</p>
+            </div>
+
+            <div class="space-y-3">
+                <h4 class="font-bold text-sm text-gray-300">SOCIAL TASK</h4>
+                <div class="bg-gray-800/60 p-3 rounded-xl border border-gray-700 flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-semibold">চ্যানেলে জয়েন করুন 🎁</p>
+                        <p class="text-xs text-yellow-400">+৳150 বোনাস</p>
+                    </div>
+                    <button onclick="completeTask(this, 150)" class="bg-green-600 px-4 py-1.5 rounded-lg text-xs font-bold">DONE</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- WITHDRAW TAB -->
+        <div id="tab-withdraw" class="space-y-4 hidden">
+            <div class="bg-gray-800/60 p-5 rounded-2xl border border-gray-700 space-y-4">
+                <h3 class="font-bold text-lg">Withdraw</h3>
+                <div>
+                    <label class="text-xs text-gray-400">পেমেন্ট মেথড</label>
+                    <select id="withdraw-method" class="w-full mt-1 bg-gray-900 border border-gray-700 p-3 rounded-xl text-sm outline-none">
+                        <option>Bkash (ন্যূনতম ২০০০)</option>
+                        <option>Nagad (ন্যূনতম ২০০০)</option>
+                        <option>Rocket (ন্যূনতম ২০০০)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400">Account Number</label>
+                    <input type="number" id="acc-number" placeholder="০১৭xxxxxxxx" class="w-full mt-1 bg-gray-900 border border-gray-700 p-3 rounded-xl text-sm outline-none">
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400">Amount</label>
+                    <input type="number" id="withdraw-amount" placeholder="৳ পরিমাণ" class="w-full mt-1 bg-gray-900 border border-gray-700 p-3 rounded-xl text-sm outline-none">
+                </div>
+                <button onclick="requestWithdraw()" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 py-3 rounded-xl font-bold shadow-lg transition">Request Withdraw</button>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-gray-900/90 backdrop-blur border-t border-gray-800 flex justify-around p-3 max-w-md mx-auto">
+        <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center text-yellow-400">
+            <span class="text-xl">🏠</span>
+            <span class="text-xs font-bold">HOME</span>
+        </button>
+        <button onclick="switchTab('task')" id="nav-task" class="flex flex-col items-center text-gray-400">
+            <span class="text-xl">📋</span>
+            <span class="text-xs font-bold">TASK</span>
+        </button>
+        <button onclick="switchTab('withdraw')" id="nav-withdraw" class="flex flex-col items-center text-gray-400">
+            <span class="text-xl">🎁</span>
+            <span class="text-xs font-bold">WITHDRAW</span>
+        </button>
+    </nav>
+
+    <script>
+        let balance = 1070.00;
+        let adsWatched = 0;
+
+        function switchTab(tab) {
+            ['home', 'task', 'withdraw'].forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                document.getElementById(`nav-${t}`).className = "flex flex-col items-center text-gray-400";
+            });
+            document.getElementById(`tab-${tab}`).classList.remove('hidden');
+            document.getElementById(`nav-${tab}`).className = "flex flex-col items-center text-yellow-400";
+        }
+
+        function updateUI() {
+            document.getElementById('user-balance').innerText = `ব্যালেন্স: ৳${balance.toFixed(2)} 💰`;
+            document.getElementById('main-balance').innerText = `৳${balance.toFixed(2)}`;
+            document.getElementById('ads-count').innerText = adsWatched;
+        }
+
+        function watchAd() {
+            if (adsWatched < 17) {
+                adsWatched++;
+                balance += 30;
+                document.getElementById('ad-progress').innerText = adsWatched;
+                updateUI();
+                alert('সফলভাবে অ্যাড দেখা সম্পন্ন হয়েছে! ৩০ টাকা যোগ হয়েছে।');
+            } else {
+                alert('আজকের লিমিট শেষ!');
+            }
+        }
+
+        function completeTask(btn, amount) {
+            balance += amount;
+            btn.innerText = "COMPLETED";
+            btn.disabled = true;
+            btn.className = "bg-gray-600 px-4 py-1.5 rounded-lg text-xs font-bold cursor-not-allowed";
+            updateUI();
+            alert(`অভিনন্দন! আপনি ${amount} টাকা বোনাস পেয়েছেন।`);
+        }
+
+        function copyRefLink() {
+            navigator.clipboard.writeText(document.getElementById('ref-link').innerText);
+            alert('রেফারেল লিংক কপি করা হয়েছে!');
+        }
+
+        function shareRefLink() {
+            if (navigator.share) {
+                navigator.share({ title: 'EasyTaka Hub', text: 'সহজে টাকা ইনকাম করুন!', url: 'https://t.me/EasyTakaHub_bot' });
+            } else {
+                alert('লিংক শেয়ার করা হয়েছে!');
+            }
+        }
+
+        function requestWithdraw() {
+            let amount = parseFloat(document.getElementById('withdraw-amount').value);
+            let acc = document.getElementById('acc-number').value;
+            if(!acc || isNaN(amount) || amount < 2000) {
+                alert('ন্যূনতম ২০০০ টাকা এবং সঠিক অ্যাকাউন্ট নম্বর দিন!');
+                return;
+            }
+            if(amount > balance) {
+                alert('পর্যাপ্ত ব্যালেন্স নেই!');
+                return;
+            }
+            balance -= amount;
+            updateUI();
+            alert('উইথড্র রিকোয়েস্ট সফলভাবে সাবমিট হয়েছে!');
+        }
+    </script>
+</body>
+</html>
